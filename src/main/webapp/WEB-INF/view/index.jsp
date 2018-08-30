@@ -21,6 +21,7 @@
             <th>Employee active</th>
             <th>Employee department</th>
             <th>Delete</th>
+            <th>image</th>
         </tr>
         </thead>
 
@@ -43,6 +44,7 @@
                 <td> ${employee.active}</td>
                 <td> ${employee.department.name}</td>
                 <td><a href="${deleteLink}">Delete</a></td>
+                <c:if test="${employee.image != null}"><td align="center"><img id="image" height="30" width="30"  src="data:image/jpg;base64, ${employee.base64imageFile}"></td></c:if>
             </tr>
         </c:forEach>
         </tbody>
@@ -58,7 +60,8 @@
 
 <br/>
 Edit form:
-<form:form action="${pageContext.request.contextPath}/saveEmployee" modelAttribute="employee" method="post">
+<form:form action="${pageContext.request.contextPath}/saveEmployee" enctype="multipart/form-data" modelAttribute="employee" method="post">
+
     <form:hidden path="id"/>
     <label>Employee name:</label>
     <form:input path="name" disabled="${disableFields}"/>
@@ -78,6 +81,16 @@ Edit form:
     <input type="submit" value="Save"/>
     <input type="reset" value="Cancel"/>
 </form:form>
+<%--form for adding file(image)--%>
+<form action="${pageContext.request.contextPath}/upload" method="post" enctype="multipart/form-data">
+    <select name="employeeId">
+        <c:forEach var="employee" items="${employees}">
+            <option value="${employee.id}">EmpId ${employee.id} - name ${employee.name}</option>
+        </c:forEach>
+    </select>
+    <input type="file" name="file" required>
+    <input type="submit" />
+</form>
 
 <br/>
 <form action="${pageContext.request.contextPath}/search" method="get">

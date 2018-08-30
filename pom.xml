@@ -80,6 +80,18 @@
           <artifactId>mysql-connector-java</artifactId>
           <version>8.0.12</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/com.google.guava/guava-io -->
+      <dependency>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava-io</artifactId>
+          <version>r03</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+          <version>1.9</version>
+      </dependency>
+
   </dependencies>
 
   <build>

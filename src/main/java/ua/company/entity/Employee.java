@@ -1,9 +1,13 @@
 package ua.company.entity;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.codec.binary.Base64;
+
 import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.UnsupportedEncodingException;
 
 
 @Entity
@@ -17,6 +21,25 @@ public class Employee extends AbstractEntity{
 
     @Column(name = "active")
     private boolean active;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+//    This field needed for rendering byte array to image in jsp page
+    @Transient
+    private String base64imageFile;
+
+    public String getBase64imageFile() {
+        byte[] encodeBase64 = Base64.encodeBase64(getImage());
+        String base64Encoded = "A";
+        try {
+            base64Encoded = new String(encodeBase64, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return base64Encoded;
+    }
 
     @OneToOne
     @JoinColumn(name = "department_id")
@@ -38,6 +61,13 @@ public class Employee extends AbstractEntity{
         this.active = active;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public Department getDepartment() {
         return department;
     }
@@ -50,9 +80,7 @@ public class Employee extends AbstractEntity{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Employee employee = (Employee) o;
-
         return id != null ? id.equals(employee.id) : employee.id == null;
     }
 
